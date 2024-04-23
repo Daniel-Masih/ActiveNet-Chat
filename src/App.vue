@@ -1,5 +1,18 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
+import MessageDisplay from './components/MessageDisplay.vue';
+import MessageInput from './components/MessageInput.vue';
+import HelloWorld from './components/HelloWorld.vue';
+
+const messages = ref([]);
+const handleSendMessage = (newMessage) => {
+  const message = {
+    id: Date.now(),
+    text: newMessage,
+    isOutgoing: true // Assuming all messages sent from this interface are outgoing
+  };
+  messages.value.push(message);
+};
 </script>
 
 <template>
@@ -10,8 +23,10 @@ import HelloWorld from './components/HelloWorld.vue'
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
+    <HelloWorld msg="Vite + Vue" />
+    <message-display :messages="messages"></message-display>
+    <message-input @send="handleSendMessage"></message-input>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
