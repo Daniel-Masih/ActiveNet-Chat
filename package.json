@@ -1,0 +1,25 @@
+{
+  "name": "myapp",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron:start": "electron ." 
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.4.24" 
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "electron": "^30.0.1",
+    "vite": "^5.2.0"
+  },
+  "type": "module"
+}
