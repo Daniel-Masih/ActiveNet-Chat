@@ -1,20 +1,30 @@
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow } from 'electron';
+import path from 'path';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
 
-function createWindow () {
-  // Create the browser window.
-  let win = new BrowserWindow({
+const isDev = process.env.NODE_ENV === 'development';
+console.log("Is development environment:", isDev);
+
+
+function createWindow() {
+  const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true // It's important to understand the security implications of this setting.
+      contextIsolation: true,
     }
   });
 
-  // and load the index.html of the app.
-  win.loadFile('index.html');
+  // Load the index.html of the app.
+  const URL = isDev
+    ? 'http://localhost:5173' // Vite dev server
+    : `file://${path.join(__dirname, 'dist/index.html')}`;
 
-  // Open the DevTools. (You can remove this line if you don't want the dev tools to open automatically)
+  win.loadURL(URL);
   win.webContents.openDevTools();
 }
 

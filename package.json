@@ -1,23 +1,24 @@
 {
-  "name": "myapp",
+  "name": "my-vue-app",
   "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "cross-env NODE_ENV=development electron .",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron:start": "electron ." 
+    "electron:start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vue": "^3.4.24" 
+    "vue": "^3.4.24"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
+    "cross-env": "^7.0.3",
     "electron": "^30.0.1",
     "vite": "^5.2.0"
   },
