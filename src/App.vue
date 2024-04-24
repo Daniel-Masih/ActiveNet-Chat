@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import MessageDisplay from './components/MessageDisplay.vue';
 import MessageInput from './components/MessageInput.vue';
-import HelloWorld from './components/HelloWorld.vue';
 
 const messages = ref([]);
 const handleSendMessage = (newMessage) => {
@@ -16,30 +15,20 @@ const handleSendMessage = (newMessage) => {
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-    <HelloWorld msg="Vite + Vue" />
+  <!-- Here we add the class name 'app-container' -->
+  <div class="app-container"> 
     <message-display :messages="messages"></message-display>
     <message-input @send="handleSendMessage"></message-input>
   </div>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+/* Now we style the 'app-container' */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh; /* Use the full viewport height */
+  max-width: 700px; /* Adjust this value to set the maximum width of the app */
+  margin: 0 auto; /* This will center your app in the middle of the page */
 }
 </style>
