@@ -30,7 +30,8 @@
 .input-container {
   display: flex;
   padding: 10px;
-  background-color: white;
+  border-radius: 20px;
+  background-color: #E8FFD1;
   border-top: 1px solid #eee;
   align-items: center; /* Ensure vertical centering */
 }
@@ -39,7 +40,9 @@
   flex-grow: 1;
   padding: 10px;
   margin-right: 10px;
-  border: 2px solid #007bff;
+  color: #213547;
+  background-color: #FFFFFF;
+  border: 2px solid #57D9A3;
   border-radius: 18px;
   resize: none; /* Disable manual resize */
   min-height: 50px; /* Minimum height */
@@ -49,12 +52,27 @@
 }
 
 .message-input:focus {
-  border-color: #0056b3; /* Focus state */
+  border-color: #45C28D; /* Focus state */
+}
+
+.message-input::-webkit-scrollbar {
+  width: 10px; /* Adjust the width of the scrollbar */
+}
+
+.message-input::-webkit-scrollbar-track {
+  background: transparent; /* Color of the track */
+  border-radius: 12px; /* Optional: if you want rounded corners on the track */
+}
+
+.message-input::-webkit-scrollbar-thumb {
+  background-color: #57D9A3; /* Color of the scrollbar thumb */
+  border-radius: 12px; /* Rounded corners on the thumb */
+  border: 2px solid #E8FFD1; /* Optional: if you want a border around the thumb */
 }
 
 button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #57D9A3;
   border: none;
   color: white;
   border-radius: 18px;
@@ -63,7 +81,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #45C28D;
 }
 </style>
 

@@ -24,12 +24,12 @@
     flex-direction: column-reverse; /* Start from the bottom */
     gap: 10px;
     scrollbar-width: thin;
-    scrollbar-color: #888 #ffffff00; /* Custom scrollbar styles */
+    scrollbar-color: #57D9A3 #E8FFD1; /* Custom scrollbar styles */
   }
   
   
 .message {
-  width: 70%; /* set a fixed width for all message bubbles */
+  /* width: 70%; /* set a fixed width for all message bubbles */
   min-width: 100px; /* you can set a minimum width to ensure short messages do not look too small */
   max-width: 300px;
   overflow-wrap: break-word;
@@ -40,7 +40,8 @@
   padding: 10px 15px;
   border-radius: 18px;
   box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
-  background-color: #f4f4f8;
+  background-color: #E8FFD1;
+  color: #213547;
   transform: scale(0);
   animation: popIn 0.3s forwards;
   display: inline-block; /* ensure that the bubble sizes to the content width */
@@ -60,31 +61,31 @@
 }
 
 .message.outgoing {
-  background-color: #007bff;
+  background-color: #57D9A3;
   color: white;
   margin-left: auto; /* Align to the right */
 }
 
 .message::after { /* Add tail effect to messages */
-  content: '';
+  content: none;
   position: absolute;
   bottom: 0;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 10px; /* Adjust as needed for the size of the tail */
-  border-color: transparent transparent transparent #f4f4f8; /* Match bubble background */
+  border-color: transparent transparent transparent #E8FFD1; 
 }
 
 .message.outgoing::after {
-  content: '';
+  content: none;
   position: absolute;
   bottom: 0;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 10px; /* Adjust as needed for the size of the tail */
-  border-color: transparent #007bff transparent transparent; /* Match outgoing bubble background */
+  border-color: transparent #57D9A3 transparent transparent; 
 }
 
   .outgoing {
