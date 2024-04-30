@@ -1,30 +1,37 @@
 <template>
-    <div class="input-container">
-      <textarea v-model="message" @keyup.enter="sendMessage" placeholder="Ask me about ActiveNet!" class="message-input" rows="1"></textarea>
-      <button @click="sendMessage">Send</button>
-    </div>
-  </template>
+  <div class="input-container">
+    <textarea v-model="message" @keyup.enter="handleSend" placeholder="Ask me about ActiveNet!" class="message-input" rows="1"></textarea>
+    <button @click="handleSend">Send</button>
+  </div>
+</template>
+
   
   <script>
-  export default {
-    name: 'MessageInput',
-    data() {
-      return {
-        message: ''
-      };
-    },
-    methods: {
-      sendMessage() {
-        if (this.message.trim()) {
-          // Prevent newline from being added after hitting enter
-          event.preventDefault();
-          this.$emit('send', this.message.trim());
-          this.message = ''; // Clear the textarea after sending
-        }
+import { sendMessage } from '@/services/chatService';
+
+export default {
+  name: 'MessageInput',
+  data() {
+    return {
+      message: ''
+    };
+  },
+  methods: {
+    async handleSend() {  // Renamed from sendMessage to handleSend
+      const trimmedMessage = this.message.trim();
+      if (trimmedMessage) {
+        // Prevent newline from being added after hitting enter
+        event.preventDefault();
+        this.$emit('send', { text: trimmedMessage, isOutgoing: true });
+        const response = await sendMessage(trimmedMessage);
+        this.$emit('send', { text: response, isOutgoing: false });
+        this.message = ''; // Clear the textarea after sending
       }
     }
   }
-  </script>
+}
+</script>
+
   
   <style scoped>
 .input-container {

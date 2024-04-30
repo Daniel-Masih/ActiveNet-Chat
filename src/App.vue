@@ -11,6 +11,7 @@ const handleSendMessage = (newMessage) => {
     isOutgoing: true // Assuming all messages sent from this interface are outgoing
   };
   messages.value.push(message);
+  
 };
 </script>
 
