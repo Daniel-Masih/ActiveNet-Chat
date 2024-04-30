@@ -34,6 +34,8 @@ export default {
 
   
   <style scoped>
+ 
+
 .input-container {
   display: flex;
   padding: 10px;
