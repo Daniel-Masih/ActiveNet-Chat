@@ -4,15 +4,15 @@ import MessageDisplay from './components/MessageDisplay.vue';
 import MessageInput from './components/MessageInput.vue';
 
 const messages = ref([]);
-const handleSendMessage = (newMessage) => {
+const handleSendMessage = (messageObject) => {
   const message = {
     id: Date.now(),
-    text: newMessage,
-    isOutgoing: true // Assuming all messages sent from this interface are outgoing
+    text: messageObject.text, // Now correctly extracting the text from the object
+    isOutgoing: messageObject.isOutgoing // Use the isOutgoing value from the emitted event
   };
   messages.value.push(message);
-  
 };
+
 </script>
 
 <template>
