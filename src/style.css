@@ -81,4 +81,25 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* Styling the scrollbar itself */
+::-webkit-scrollbar {
+  width: 8px; /* scrollbar width */
+}
+
+/* Styling the track (part the scrollbar sits on) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* track color, light gray for visibility */
+}
+
+/* Styling the handle (scrollbar thumb) */
+::-webkit-scrollbar-thumb {
+  background: #57D9A3; /* thumb color, green to match theme */
+  border-radius: 10px; /* rounded corners for the scrollbar thumb */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #45a049; /* slightly darker green on hover */
+}
+
 

@@ -1,35 +1,66 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import MessageDisplay from './components/MessageDisplay.vue';
 import MessageInput from './components/MessageInput.vue';
+import { sendMessage } from './services/chatService';
 
 const messages = ref([]);
-const handleSendMessage = (messageObject) => {
-  const message = {
-    id: Date.now(),
-    text: messageObject.text, // Now correctly extracting the text from the object
-    isOutgoing: messageObject.isOutgoing // Use the isOutgoing value from the emitted event
-  };
-  messages.value.push(message);
+const isLoading = ref(false);
+let lastMessageId = 0;
+const messageReceived = ref(false); // New ref to track if a message was received
+
+const handleSendMessage = async (messageObject) => {
+  isLoading.value = true;
+  lastMessageId++;
+  messages.value.push({
+    id: lastMessageId,
+    text: messageObject.text,
+    isOutgoing: messageObject.isOutgoing
+  });
+
+  try {
+    const responseText = await sendMessage(messageObject.text);
+    lastMessageId++;
+    messages.value.push({
+      id: lastMessageId,
+      text: responseText,
+      isOutgoing: false
+    });
+    isLoading.value = false;
+    messageReceived.value = true; // Set to true when a response is received
+
+    // Reset the messageReceived after it's set so it's ready for the next cycle
+    setTimeout(() => {
+      messageReceived.value = false;
+    }, 100);
+
+  } catch (error) {
+    console.error('Error in fetching the response:', error);
+    isLoading.value = false;
+  }
 };
 
+// Watcher to reset messageReceived for continuous operation
+watch(messageReceived, (newVal) => {
+  if (!newVal) {
+    messageReceived.value = false;
+  }
+});
 </script>
 
 <template>
-  <!-- Here we add the class name 'app-container' -->
-  <div class="app-container"> 
-    <message-display :messages="messages"></message-display>
-    <message-input @send="handleSendMessage"></message-input>
+  <div class="app-container">
+    <message-display :messages="messages" :is-loading="isLoading"></message-display>
+    <message-input @send="handleSendMessage" :is-loading="isLoading" :message-received="messageReceived"></message-input>
   </div>
 </template>
 
 <style scoped>
-/* Now we style the 'app-container' */
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 90vh; /* Use the full viewport height */
-  max-width: 700px; /* Adjust this value to set the maximum width of the app */
-  margin: 0 auto; /* This will center your app in the middle of the page */
+  height: 90vh;
+  max-width: 700px; /* Adjusted to make it narrower */
+  margin: 0 auto; /* This will center your app on the page */
 }
 </style>

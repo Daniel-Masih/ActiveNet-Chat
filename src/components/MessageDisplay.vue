@@ -1,10 +1,14 @@
 <template>
   <div class="message-display">
+    <div v-if="isLoading" class="typing-indicator">
+      <span class="dot">.</span>
+      <span class="dot">.</span>
+      <span class="dot">.</span>
+    </div>
     <div v-for="message in sortedMessages" :key="message.id"
-     :class="['message', { 'outgoing': message.isOutgoing, 'incoming': !message.isOutgoing }]">
-  <span>{{ message.text }}</span>
-</div>
-
+         :class="['message', { 'outgoing': message.isOutgoing, 'incoming': !message.isOutgoing }]">
+      <span>{{ message.text }}</span>
+    </div>
   </div>
 </template>
 
@@ -12,47 +16,17 @@
 export default {
   name: 'MessageDisplay',
   props: {
-    messages: Array // Accepts messages from the parent
+    messages: Array,
+    isLoading: Boolean
   },
   computed: {
     sortedMessages() {
-      return this.messages.slice().reverse(); // This will ensure messages are displayed in reverse order
-    }
-  },
-  mounted() {
-    // this.fetchMessages(); // Calls the fetchMessages method when the component mounts
-  },
-  methods: {
-    fetchMessages() {
-      const data = {
-        model: "gpt-4-turbo",
-        messages: [{role: "user", content: "Hello, how can I help?"}]
-      };
-
-      fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.choices && data.choices.length > 0) {
-          const apiMessages = data.choices.map(choice => ({
-            text: choice.message.content,
-            isOutgoing: false, // Ensures responses are considered incoming
-            id: Date.now() + Math.random() // Ensures a unique key
-          }));
-          this.messages.push(...apiMessages);
-        }
-      })
-      .catch(error => console.error('Error fetching messages:', error));
+      return [...this.messages].reverse();
     }
   }
 }
 </script>
+
 
 <style scoped>
 .message-display {
@@ -89,6 +63,34 @@ export default {
 
 .message.incoming {
   align-self: flex-start; /* Align incoming messages to the left */
+}
+
+.loading {
+  font-style: italic;
+  color: #213547; /* This should make it visible. Check if this color blends with the background. */
+  font-size: 1rem; /* Ensuring it's not too small. */
+}
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #213547;
+}
+
+.dot {
+  animation: dot-flashing 1s infinite linear alternate;
+  font-size: 3rem;
+  padding: 0 2px;
+}
+
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-flashing {
+  0% { opacity: 0; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes popIn {

@@ -1,41 +1,50 @@
 <template>
   <div class="input-container">
-    <textarea v-model="message" @keyup.enter="handleSend" placeholder="Ask me about ActiveNet!" class="message-input" rows="1"></textarea>
-    <button @click="handleSend">Send</button>
+    <textarea ref="messageInput"
+              v-model="message" 
+              @keyup.enter="handleSend" 
+              :disabled="isLoading"
+              placeholder="Ask me about ActiveNet..."
+              class="message-input" 
+              rows="1"></textarea>
+    <button @click="handleSend" :disabled="isLoading">Send</button>
   </div>
 </template>
 
-  
-  <script>
-import { sendMessage } from '@/services/chatService';
 
+<script>
 export default {
   name: 'MessageInput',
+  props: {
+    isLoading: Boolean,
+    messageReceived: Boolean  // Prop to indicate a message has been received
+  },
   data() {
     return {
-      message: ''
+      message: '',
     };
   },
-  methods: {
-    async handleSend() {  // Renamed from sendMessage to handleSend
-      const trimmedMessage = this.message.trim();
-      if (trimmedMessage) {
-        // Prevent newline from being added after hitting enter
-        event.preventDefault();
-        this.$emit('send', { text: trimmedMessage, isOutgoing: true });
-        const response = await sendMessage(trimmedMessage);
-        this.$emit('send', { text: response, isOutgoing: false });
-        this.message = ''; // Clear the textarea after sending
+  watch: {
+    messageReceived(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.$refs.messageInput.focus();  // Focus the input field after update
+        });
       }
+    }
+  },
+  methods: {
+    handleSend() {
+      if (!this.message.trim()) return;
+      this.$emit('send', { text: this.message.trim(), isOutgoing: true });
+      this.message = '';  // Clear the message input after sending
     }
   }
 }
 </script>
 
-  
-  <style scoped>
- 
 
+<style scoped>
 .input-container {
   display: flex;
   padding: 10px;
@@ -44,7 +53,6 @@ export default {
   border-top: 1px solid #eee;
   align-items: center; /* Ensure vertical centering */
 }
-
 .message-input {
   flex-grow: 1;
   padding: 10px;
@@ -59,39 +67,22 @@ export default {
   font-size: 1rem;
   outline: none; /* Remove default focus outline */
 }
-
 .message-input:focus {
   border-color: #45C28D; /* Focus state */
 }
-
-.message-input::-webkit-scrollbar {
-  width: 10px; /* Adjust the width of the scrollbar */
-}
-
-.message-input::-webkit-scrollbar-track {
-  background: transparent; /* Color of the track */
-  border-radius: 12px; /* Optional: if you want rounded corners on the track */
-}
-
-.message-input::-webkit-scrollbar-thumb {
-  background-color: #57D9A3; /* Color of the scrollbar thumb */
-  border-radius: 12px; /* Rounded corners on the thumb */
-  border: 2px solid #E8FFD1; /* Optional: if you want a border around the thumb */
-}
-
 button {
   padding: 10px 20px;
-  background-color: #57D9A3;
+  background-color: #57D9A3; /* Original button color */
   border: none;
   color: white;
   border-radius: 18px;
   font-size: 1rem;
   cursor: pointer;
 }
-
 button:hover {
   background-color: #45C28D;
 }
+button:disabled {
+  background-color: #ccc; /* Disabled state */
+}
 </style>
-
-  
