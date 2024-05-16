@@ -3,6 +3,7 @@ import OpenAI from "openai";
 // Environment variables for the assistant ID and API key.
 const ASSISTANT_ID = import.meta.env.VITE_OPENAI_ASSISTANT_ID;
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+const VECTOR_ID = import.meta.env.VITE_VECTOR_STORE_ID;
 
 // Initializing the OpenAI client with your API key.
 const openai = new OpenAI({apiKey: API_KEY, dangerouslyAllowBrowser: true});
@@ -16,7 +17,7 @@ export const sendMessage = async (message) => {
   const thread = await openai.beta.threads.create({
     tool_resources: {
       "file_search": {
-        "vector_store_ids": ["vs_vdnb0Y9R0NNRPKyqu7c04sx4"]
+        "vector_store_ids": [VECTOR_ID]
       }
     }
 });
@@ -30,7 +31,7 @@ export const sendMessage = async (message) => {
   // Run the assistant using the thread, with specific instructions.
   const run = await openai.beta.threads.runs.createAndPoll(thread.id, {
     assistant_id: ASSISTANT_ID,
-    instructions: "Help the user"
+    instructions: "Help the user with questions, do not bold any text or source your outputs. Always assume the user is already logged in"
   });
 
   // Check if the run completed successfully.

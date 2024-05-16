@@ -27,7 +27,6 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .message-display {
   padding: 20px;
@@ -53,6 +52,7 @@ export default {
   animation: popIn 0.3s forwards;
   display: inline-block;
   vertical-align: top;
+  text-align: left; /* Left-align text */
 }
 
 .message.outgoing {

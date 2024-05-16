@@ -8,7 +8,6 @@ const require = createRequire(import.meta.url);
 const isDev = process.env.NODE_ENV === 'development';
 console.log("Is development environment:", isDev);
 
-
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -19,13 +18,23 @@ function createWindow() {
     }
   });
 
-  // Load the index.html of the app.
   const URL = isDev
     ? 'http://localhost:5173' // Vite dev server
-    : `file://${path.join(__dirname, 'dist/index.html')}`;
+    : `file://${path.join(__dirname, 'dist', 'index.html')}`;
+
+  console.log("Loading URL:", URL); // Debug log
 
   win.loadURL(URL);
-  win.webContents.openDevTools();
+
+  win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('Failed to load URL:', URL, errorDescription); // Debug log
+  });
+
+  if (isDev) {
+    win.webContents.openDevTools();
+  }
+
+  return win;
 }
 
 app.whenReady().then(createWindow);
